@@ -55,28 +55,37 @@ let rows = csv.split("\n");
 let html = "";
 
 
-rows.shift(); // 删除标题
+// 删除第一行标题
+rows.shift();
 
 
 rows.forEach((row,index)=>{
 
 
-let data = row.split(",");
+if(!row.trim()) return;
 
 
-let name = data[0];
-let lat = data[1];
-let lng = data[2];
+// 分割每一行
+let firstSplit = row.split("\t");
+
+
+// 地区
+let prefecture = firstSplit[0];
+
+
+// 坐标
+let coordinates = firstSplit[1];
+
 
 
 html += `
 
 <div class="card">
 
-<h3>${name}</h3>
+<h3>${prefecture}</h3>
 
 <p id="coord${index}">
-${lat},${lng}
+${coordinates}
 </p>
 
 <button onclick="copy('coord${index}')">
