@@ -35,43 +35,57 @@ cursor:pointer;
 
 <h1>Pokemon Coordinates</h1>
 
-<div id="list"></div>
+<div id="list">
+Loading...
+</div>
 
 
 <script>
 
-fetch("pokelid.json")
+fetch("pokelid.csv")
 
-.then(response => response.json())
+.then(response => response.text())
 
-.then(data => {
+.then(csv => {
+
+
+let rows = csv.split("\n");
 
 
 let html = "";
 
 
-data.forEach((item,index)=>{
+rows.shift(); // 删除标题
+
+
+rows.forEach((row,index)=>{
+
+
+let data = row.split(",");
+
+
+let name = data[0];
+let lat = data[1];
+let lng = data[2];
 
 
 html += `
 
 <div class="card">
 
-<h3>${item.name}</h3>
+<h3>${name}</h3>
 
 <p id="coord${index}">
-${item.lat},${item.lng}
+${lat},${lng}
 </p>
 
 <button onclick="copy('coord${index}')">
 Copy Coordinate
 </button>
 
-
 </div>
 
 `;
-
 
 });
 
@@ -84,7 +98,7 @@ document.getElementById("list").innerHTML = html;
 
 function copy(id){
 
-const text =
+let text =
 document.getElementById(id).innerText;
 
 
@@ -94,7 +108,6 @@ navigator.clipboard.writeText(text);
 alert("Copied!");
 
 }
-
 
 </script>
 
