@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Pokemon Coordinates</title>
 
 <style>
+
 body{
 font-family:Arial;
 background:#111;
@@ -23,39 +25,79 @@ button{
 padding:8px 15px;
 cursor:pointer;
 }
+
 </style>
 
 </head>
+
+
 <body>
 
 <h1>Pokemon Coordinates</h1>
 
-<div class="card">
-<h3>New York</h3>
-<p id="coord1">40.781200,-73.966500</p>
-<button onclick="copy('coord1')">
-Copy Coordinate
-</button>
-</div>
+<div id="list"></div>
 
-<div class="card">
-<h3>Tokyo</h3>
-<p id="coord2">35.710063,139.810700</p>
-<button onclick="copy('coord2')">
-Copy Coordinate
-</button>
-</div>
 
 <script>
+
+fetch("pokelid.json")
+
+.then(response => response.json())
+
+.then(data => {
+
+
+let html = "";
+
+
+data.forEach((item,index)=>{
+
+
+html += `
+
+<div class="card">
+
+<h3>${item.name}</h3>
+
+<p id="coord${index}">
+${item.lat},${item.lng}
+</p>
+
+<button onclick="copy('coord${index}')">
+Copy Coordinate
+</button>
+
+
+</div>
+
+`;
+
+
+});
+
+
+document.getElementById("list").innerHTML = html;
+
+
+});
+
+
 function copy(id){
+
 const text =
 document.getElementById(id).innerText;
 
+
 navigator.clipboard.writeText(text);
 
+
 alert("Copied!");
+
 }
+
+
 </script>
+
 
 </body>
 </html>
